@@ -1,61 +1,139 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Thank You Flower</title>
-  <style>
-    body {
-      margin: 0;
-      background: #fff0f6;
-      font-family: 'Segoe UI', sans-serif;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      height: 100vh;
-      text-align: center;
-    }
-
-    .flower {
-      width: 200px;
-      height: 200px;
-      margin-bottom: 20px;
-    }
-
-    h1 {
-      font-size: 2.5rem;
-      color: #d6336c;
-      margin: 0;
-    }
-
-    p {
-      font-size: 1.2rem;
-      color: #495057;
-      margin-top: 10px;
-    }
-  </style>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Beautiful Rising Flower with Thank You</title>
+<style>
+  body, html {
+    margin: 0; height: 100%;
+    display: flex; justify-content: center; align-items: center;
+    background: linear-gradient(135deg, #ffe6f2, #8b3a5a);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    overflow: hidden;
+  }
+  canvas {
+    background: #fff5f8;
+    border-radius: 20px;
+    box-shadow: 0 0 30px rgba(139, 58, 90, 0.6);
+    display: block;
+  }
+  #thankYou {
+    position: absolute;
+    top: 70%;
+    width: 100%;
+    text-align: center;
+    font-size: 2.8rem;
+    font-weight: 700;
+    color: #b0304a;
+    opacity: 0;
+    user-select: none;
+    pointer-events: none;
+    text-shadow: 0 0 10px #ffaabb;
+    transition: opacity 2s ease;
+  }
+</style>
 </head>
 <body>
 
-  <!-- 🌸 Flower SVG -->
-  <svg class="flower" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
-    <circle cx="32" cy="32" r="8" fill="#ffd43b" />
-    <g fill="#e64980">
-      <circle cx="32" cy="12" r="8" />
-      <circle cx="32" cy="52" r="8" />
-      <circle cx="12" cy="32" r="8" />
-      <circle cx="52" cy="32" r="8" />
-      <circle cx="18" cy="18" r="8" />
-      <circle cx="46" cy="46" r="8" />
-      <circle cx="18" cy="46" r="8" />
-      <circle cx="46" cy="18" r="8" />
-    </g>
-  </svg>
+<canvas id="flowerCanvas" width="450" height="450"></canvas>
+<div id="thankYou">Thank You ❤️</div>
 
-  <!-- 🌼 Message -->
-  <h1>Thank You!</h1>
-  <p>You are appreciated 🌷</p>
+<script>
+  const ctx = document.getElementById('flowerCanvas').getContext('2d');
+  const width = 450, height = 450;
+  const thankYouEl = document.getElementById('thankYou');
 
+  function drawPetal(cx, cy, size, rotation, colors) {
+    ctx.save();
+    ctx.translate(cx, cy);
+    ctx.rotate(rotation);
+    const grad = ctx.createRadialGradient(0, 0, size * 0.1, 0, 0, size);
+    grad.addColorStop(0, colors.light);
+    grad.addColorStop(1, colors.dark);
+    ctx.fillStyle = grad;
+    ctx.beginPath();
+    ctx.moveTo(0, 0);
+    ctx.bezierCurveTo(size * 0.4, -size, size * 1.4, -size * 0.5, 0, size * 1.2);
+    ctx.bezierCurveTo(-size * 1.4, -size * 0.5, -size * 0.4, -size, 0, 0);
+    ctx.closePath();
+    ctx.fill();
+    ctx.restore();
+  }
+
+  function drawLayer(cx, cy, size, petals, colors, rotationOffset = 0) {
+    for (let i = 0; i < petals; i++) {
+      let angle = (2 * Math.PI / petals) * i + rotationOffset;
+      drawPetal(cx, cy, size, angle, colors);
+    }
+  }
+
+  function drawCenter(cx, cy, radius) {
+    const grad = ctx.createRadialGradient(cx, cy, radius * 0.2, cx, cy, radius);
+    grad.addColorStop(0, '#ffdee6');
+    grad.addColorStop(1, '#b03060');
+    ctx.fillStyle = grad;
+    ctx.beginPath();
+    ctx.arc(cx, cy, radius, 0, 2 * Math.PI);
+    ctx.fill();
+  }
+
+  function drawStemAndLeaves(offsetX, offsetY) {
+    ctx.strokeStyle = '#237a23';
+    ctx.lineWidth = 10;
+    ctx.lineCap = 'round';
+    ctx.beginPath();
+    ctx.moveTo(offsetX + 225, offsetY + 420);
+    ctx.bezierCurveTo(offsetX + 235, offsetY + 340, offsetX + 190, offsetY + 300, offsetX + 225, offsetY + 240);
+    ctx.stroke();
+
+    function leaf(cx, cy, scale, rotation) {
+      ctx.save();
+      ctx.translate(cx, cy);
+      ctx.rotate(rotation);
+      const grad = ctx.createLinearGradient(0, 0, 60 * scale, 0);
+      grad.addColorStop(0, '#237a23');
+      grad.addColorStop(1, '#90ee90');
+      ctx.fillStyle = grad;
+      ctx.beginPath();
+      ctx.moveTo(0, 0);
+      ctx.bezierCurveTo(60 * scale, -25 * scale, 60 * scale, 25 * scale, 0, 0);
+      ctx.closePath();
+      ctx.fill();
+      ctx.restore();
+    }
+
+    leaf(offsetX + 210, offsetY + 350, 1, Math.PI / 3);
+    leaf(offsetX + 240, offsetY + 290, 0.8, -Math.PI / 3);
+  }
+
+  let posY = height + 150; // start below canvas
+  const finalY = 0;
+  let animationDone = false;
+
+  function animate() {
+    ctx.clearRect(0, 0, width, height);
+
+    let offsetX = 0;
+    let offsetY = posY;
+
+    drawLayer(225 + offsetX, 190 + offsetY, 90, 8, {light:'#ff97a3', dark:'#b0304a'}, 0);
+    drawLayer(225 + offsetX, 190 + offsetY, 55, 10, {light:'#f8bbc9', dark:'#7a2540'}, Math.PI/10);
+    drawLayer(225 + offsetX, 190 + offsetY, 25, 12, {light:'#ffd0dc', dark:'#8c2f4c'}, Math.PI/5);
+    drawCenter(225 + offsetX, 190 + offsetY, 20);
+    drawStemAndLeaves(offsetX, offsetY);
+
+    if (posY > finalY) {
+      posY -= 3; // rising speed
+      requestAnimationFrame(animate);
+    } else if (!animationDone) {
+      animationDone = true;
+      // Fade in thank you text after flower arrives
+      thankYouEl.style.opacity = '1';
+    }
+  }
+
+  animate();
+</script>
 </body>
 </html>
