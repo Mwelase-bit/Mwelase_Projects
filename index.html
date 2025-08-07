@@ -1,79 +1,61 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Be My Valentine?</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            text-align: center;
-            background-color: #ffccd5;
-        }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Thank You Flower</title>
+  <style>
+    body {
+      margin: 0;
+      background: #fff0f6;
+      font-family: 'Segoe UI', sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      text-align: center;
+    }
 
-        .container {
-            margin-top: 100px;
-        }
+    .flower {
+      width: 200px;
+      height: 200px;
+      margin-bottom: 20px;
+    }
 
-        h1 {
-            color: #d63384;
-            font-size: 2em;
-        }
+    h1 {
+      font-size: 2.5rem;
+      color: #d6336c;
+      margin: 0;
+    }
 
-        .buttons {
-            margin-top: 20px;
-            position: relative;
-        }
-
-        .btn {
-            font-size: 1.5em;
-            padding: 10px 20px;
-            border: none;
-            cursor: pointer;
-            border-radius: 10px;
-            transition: 0.3s;
-        }
-
-        .yes {
-            background-color: #ff4d6d;
-            color: white;
-        }
-
-        .no {
-            background-color: #6c757d;
-            color: white;
-            position: absolute;
-        }
-
-        img {
-            width: 200px;
-            margin-top: 20px;
-        }
-    </style>
+    p {
+      font-size: 1.2rem;
+      color: #495057;
+      margin-top: 10px;
+    }
+  </style>
 </head>
 <body>
-    <div class="container">
-        <h1> Mamas, Will you go out on a date with me? ❤️</h1>
-        <img src="https://media.giphy.com/media/jUwpNzg9IcyrK/giphy.gif" alt="Cute Love GIF">
-        
-        <div class="buttons">
-            <button class="btn yes" onclick="sayYes()">Yes 😍</button>
-            <button class="btn no" id="noButton" onmouseover="moveNo()">No 😢</button>
-        </div>
-    </div>
 
-    <script>
-        function sayYes() {
-            window.location.href = "yes.html"; // Redirects to love page
-        }
+  <!-- 🌸 Flower SVG -->
+  <svg class="flower" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+    <circle cx="32" cy="32" r="8" fill="#ffd43b" />
+    <g fill="#e64980">
+      <circle cx="32" cy="12" r="8" />
+      <circle cx="32" cy="52" r="8" />
+      <circle cx="12" cy="32" r="8" />
+      <circle cx="52" cy="32" r="8" />
+      <circle cx="18" cy="18" r="8" />
+      <circle cx="46" cy="46" r="8" />
+      <circle cx="18" cy="46" r="8" />
+      <circle cx="46" cy="18" r="8" />
+    </g>
+  </svg>
 
-        function moveNo() {
-            let noButton = document.getElementById("noButton");
-            let x = Math.random() * (window.innerWidth - 200);
-            let y = Math.random() * (window.innerHeight - 100);
-            noButton.style.left = x + "px";
-            noButton.style.top = y + "px";
-        }
-    </script>
+  <!-- 🌼 Message -->
+  <h1>Thank You!</h1>
+  <p>You are appreciated 🌷</p>
+
 </body>
 </html>
